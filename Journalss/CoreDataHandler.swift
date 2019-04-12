@@ -29,14 +29,28 @@ class CoreDataHandler {
         
         do {
             try context.save()
+            print("managedObject",helper.title, helper.content, helper.image)
         } catch  {
             print("Error creating notes")
         }
     }
     
+    func removeNotes() {
+        
+        let context = getContext()
+        let entity = NSEntityDescription.entity(forEntityName: "Notes", in: context)
+        let managedObject = NSManagedObject(entity: entity!, insertInto: context)
+
+        do {
+            try context.delete(managedObject)
+        } catch {
+            print(error)
+        }
+    }
+    
     func getNotesList() -> [Notes] {
         let context = getContext()
-        var notes : [Notes]? = nil
+        var notes: [Notes]? = nil
         do {
             notes = try context.fetch(Notes.fetchRequest())
         } catch {
