@@ -13,8 +13,6 @@ class CreateNoteViewController: UIViewController, UITextViewDelegate, UIImagePic
     @IBOutlet weak var imagePhoto: UIImageView!
     @IBOutlet weak var imageTouch: UIButton!
     @IBOutlet weak var titleText: UITextField!
-    
-    @IBOutlet weak var noteTitle: UITextView!
     @IBOutlet weak var noteContent: UITextView!
     
     var imageUrl = ""
@@ -28,9 +26,8 @@ class CreateNoteViewController: UIViewController, UITextViewDelegate, UIImagePic
         // Do any additional setup after loading the view.
     }
 
-    
     func validateNotes() -> Bool {
-        if self.imageUrl != "" && noteTitle.text != "" &&
+        if self.imageUrl != "" && titleText.text != "" &&
             noteContent.text != "Enter your note" {
             return true;
         }else{
@@ -38,11 +35,11 @@ class CreateNoteViewController: UIViewController, UITextViewDelegate, UIImagePic
         }
     }
     
-    
     @IBAction func saveButton(_ sender: UIButton) {
-        let notes = NoteModel.init(title: titleText.text!, content: noteContent.text!, image: self.imageUrl)
+        let notes = NoteModel.init(title: titleText.text!, content: noteContent.text!, image: "test")
         handler.createNotes(helper: notes)
-        //self.navigationController?.popViewController(animated: true)
+        print(notes)
+        self.navigationController?.popViewController(animated: true)
         
     }
     
@@ -67,7 +64,6 @@ class CreateNoteViewController: UIViewController, UITextViewDelegate, UIImagePic
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.dismiss(animated: true, completion: nil)
     }
-    
     
     func openPicker() {
         let alert = UIAlertController(title: "Select", message: "", preferredStyle: UIAlertController.Style.actionSheet)
@@ -94,18 +90,5 @@ class CreateNoteViewController: UIViewController, UITextViewDelegate, UIImagePic
         
         self.present(alert, animated: true, completion: nil)
     }
-    
-    
-   
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
