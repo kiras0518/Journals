@@ -11,8 +11,9 @@ import UIKit
 class CoreTableViewController: UITableViewController {
     
     @IBOutlet var noteTableView: UITableView!
-    var asdfsadf = ["1","2","3"]
-    var noteObject = [NoteModel]()
+    
+    //CoreData type
+    var listNote: [Notes]? = nil
     var selectedIndexPath: IndexPath?
     
     @IBAction func buttonCreateNote(_ sender: UIBarButtonItem) {
@@ -23,21 +24,21 @@ class CoreTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toShow" {
             if let createVC = segue.destination as? CreateNoteViewController {
-
+                print("toSHOW")
             }
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        print("listNote",listNote)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        self.listNote = CoreDataHandler().getNotesList()
+        self.noteTableView.reloadData()
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -47,13 +48,15 @@ class CoreTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return asdfsadf.count
+        return (self.listNote?.count)!
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "core_cell", for: indexPath) as? CoreTableViewCell {
-            cell.notesTitle.text = asdfsadf[indexPath.row]
+            cell.notesTitle.text = self.listNote?[indexPath.row].title
+            print("cell",listNote?[indexPath.row] as Any)
+           
             return cell
         }
         return UITableViewCell()
@@ -68,9 +71,8 @@ class CoreTableViewController: UITableViewController {
     }
     */
 
-    /*
     // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
             tableView.deleteRows(at: [indexPath], with: .fade)
@@ -78,7 +80,7 @@ class CoreTableViewController: UITableViewController {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    */
+ 
 
     /*
     // Override to support rearranging the table view.
